@@ -16,10 +16,43 @@
   filter: drop-shadow(0 0 2em #dbd64474);
 }
 
-
-
-
+.imagenPro {
+ height: 230px;
+ 
+}
 
 .read-the-docs {
   color: #888;
+}
+
+a{
+  color : #04211f !important;
+  text-decoration: none !important;
+}
+
+.item-prod{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-auto-rows: 450px;
+  gap: 32px;
+  padding: 20px 0;
+}
+
+
+.boxflex {
+  display: flex;
+
+}
+
+.boxflex >img {
+  width: 50%;
+  padding-right: 0.5px;
+}
+
+.box {
+  background-color:  whitesmoke ;
+  color: rgb(52, 50, 50);
+  width: 45%;
+  padding: 50px;
+  font-size: small;
 }
