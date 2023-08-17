@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProducts } from "../lib/productos.request"
 import { ItemListContainer } from "../components/ItemListContainer";
+import { Loader } from "../components/Loader/Loader";
 
 export const Category = () => {
   const { id } = useParams();
@@ -20,8 +21,11 @@ export const Category = () => {
   return (
     <div>
       <div className="container">
-      <span> {isLoading ? "Cargando productos...": "Productos cargados correctamente!"}</span>
-        <ItemListContainer products={products} />
+        {isLoading ?
+          <div className="spinner">
+            <Loader />
+          </div> :
+          <ItemListContainer products={products} category={id} />}
       </div>
     </div>
   );

@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
 import { getProduct } from "../lib/productos.request"
 import { useParams } from "react-router-dom";
+import { ItemCount } from "../components/ItemCount";
+import { useCartContext } from "../state/Cart.context";
+import { Loader } from "../components/Loader/Loader";
+import '../styles/textos.css'
 
 export const Detail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState({});
+
+    const { agregarProduct } = useCartContext(); //podemos traer todo el valur o desestructurar y traer solo la funcion
+
 
     useEffect(() => {
         getProduct(id).then((res) => {
@@ -12,21 +19,30 @@ export const Detail = () => {
         });
     }, [])
 
+    const handleAdd = (cant) => {
+        // console.log(product)
+        agregarProduct(product, cant);
+    };
+
+
+    if (!Object.keys(product).length) return  <div className="spinner">
+    <Loader />
+  </div>
+
     return (
-        <div className="row justify-content-center align-items-center" style={{paddingTop:"20px"}}>
-            <div style={{ width: "900px", height: "330px" }}>
-                <div className="boxflex">
-                    <img src={product.img} className="img-fluid"></img>
-                    <div className="box">
-                        <h5>{product.title} </h5>
-                        <h4 className="text-warning">${product.price}</h4>
-                        <span className="mb-2 text-muted">{product.category}</span>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi quibusdam repudiandae nesciunt? Vitae dolorum necessitatibus nemo corporis incidunt quae molestiae quam cum soluta, consequuntur reprehenderit deleniti! Ducimus aut corrupti amet.
-                        </p>
-                        <span className="mb-2 text-muted">Stock: {product.stock}</span>
-                        <div>
-                        <button type="button" className="btn btn-warning">Añadir al carrito</button>
-                        </div>
+     
+        <div style={{display:"flex" , justifyContent:"center"}}>
+            {/*  <div style={{ width: "900px", height: "330px" }}>    className="img-fluid" es delimg*/}
+            <div className="boxflex">
+                <img src={product.img} ></img>
+                <div className="box">
+                    <h5>{product.title} </h5>
+                    <h4 className="titulo">${product.price}</h4>
+                    <span className="text-secondary" >{product.category}</span>
+                    <p>{product.description}   </p>
+                    <span className="mb-2 text-muted">Stock: {product.stock}</span>
+                    <div>
+                        <ItemCount stock={product.stock} onAdd={handleAdd} />
                     </div>
                 </div>
             </div>

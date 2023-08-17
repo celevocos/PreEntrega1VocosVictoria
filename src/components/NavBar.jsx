@@ -1,15 +1,15 @@
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Container from 'react-bootstrap/Container'
-import { CartWidget } from './CartWidget'
+import { CartWidget } from './CartWidget/CartWidget'
 import logoBeauty from '../assets/logo6.png'
 import { NavLink , Outlet} from 'react-router-dom'
 
 
 export const NavBar = () => {
   return <>
-    <Navbar bg="warning" data-bs-theme="warning" style={{ padding: 0 }}>
-      <Container>
+    <Navbar style={{ padding: 0 , background: "#FF7F50"}}>
+      <Container >
         <Navbar.Brand>
           <NavLink to="/">
             <img src={logoBeauty} className="logo" alt="logo1" />
@@ -27,7 +27,7 @@ export const NavBar = () => {
           <NavLink to={"/category/Higiene"}> Higiene </NavLink>
           </Nav>
           <Nav>
-          <NavLink to={"/"}> Contact </NavLink>
+          <NavLink to={"/"}> Contacto </NavLink>
           </Nav>
         {/*   <NavDropdown title="Productos" id="basic-nav-dropdown">
             <NavDropdown.Item href="#action/1">Cosmeticos</NavDropdown.Item>
