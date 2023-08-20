@@ -9,31 +9,20 @@ body , html {
   /*background-image: url("./assets/fondo1.jpg");*/
   background: linear-gradient(#FFE4E1, #FFFAF0);
   height: 100%;
+
 }
 
-#wrapper, #root{
+#root{
   min-height: 100%;
   position: relative;
   margin: 0
 }
 
-.logo {
-  height: 3em;
-  will-change: filter;
-  transition: filter 300ms;
-  padding: 0px;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #dbd64474);
-}
-
-
 
 a {
  color: white !important;
  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-decoration: none !important;
+ text-decoration: none !important;
 }
 
 .item-prod {
@@ -44,6 +33,12 @@ a {
   padding: 20px 0;
 }
 
+/*********** DETAIL *************/
+
+.centradoFlex{
+  display: flex;
+  justify-content: center;
+}
 
 .boxflex {
   display: flex;
@@ -53,7 +48,6 @@ a {
 }
 
 .boxflex >img {
- /* width: 45%;*/
  min-width: 40%;
  min-height: 44%;
 padding-right: 0.5px;
@@ -67,6 +61,9 @@ padding-right: 0.5px;
   font-size: small;
 }
 
+
+/********************************/
+
 .show {
   color: #e19c55;
   font-size: 16px;
@@ -75,13 +72,6 @@ padding-right: 0.5px;
   padding-top: 10px;
 }
 
-.spinner {
-  display: flex;
-  flex-direction: column;
-  color: #e19c55;
-  align-items: center;
-  padding-top: 10px;
-}
 
 .hidden {
   visibility: hidden;
@@ -100,61 +90,12 @@ padding-right: 0.5px;
   border-style: solid;
 }
 
+/*************** DETALLE DEL CARRITO ******************/
 
 .detailCart {
 /*  width: 80%;*/
   margin-top: 1%;
   margin-bottom: 1%;
-}
-
-footer{
-  width: 100%;
-  position: absolute;
-}
-
-.footer {
-  height: 90px;
-  background-color: #FF7F50;
-  /*display: flex; 
-   justify-content: center;*/
-  font-size: 16px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding-left: 50px;
-  padding-right: 50px;
-  
-}
-
-.footer-nav {
-  padding-left: 30px;
-  padding-top: 10px;
-}
-
-/* SKELETON */
-
-.tit-skeleton { 
-  min-height: 28px;
-  border-radius: 4px;
-}
-
-.text-skeleton { 
-  min-height: 72px;
-  border-radius: 4px;
-}
-
-/* THE LOADING EFFECT*/
-.skeleton {
-background-color: #e2e5e7;
-background-image:			
-    linear-gradient(
-      90deg, 
-      rgba(#fff, 0), 
-      rgba(#fff, 0.5),
-      rgba(#fff, 0)
-    );
-background-size: 40px 100%; 
-background-repeat: no-repeat; 
-background-position: left -40px top 0; 
-animation: shine 1s ease infinite; 
 }
 
 .collapsible {
@@ -167,6 +108,7 @@ animation: shine 1s ease infinite;
   text-align: center;
   outline: none;
   font-size: 15px;
+  border-radius: 2px;
 }
 
 .activa, .collapsible:hover {
@@ -177,7 +119,6 @@ animation: shine 1s ease infinite;
   padding: 0 18px;
   display: none;
   overflow: hidden;
-  background-color: #de7d7d;
 }
 
 .activo {
@@ -187,6 +128,17 @@ animation: shine 1s ease infinite;
   background-color: #504c4c;
   color: white;
 
+}
+
+.cartEmpty {
+  display: flex;
+  justify-content: center;
+  background-color: #212529;
+  color: #fff;
+  height: 60px;
+  padding: 10px;
+  margin: 10px;;
+  font-size: 18px;
 }
 
 #cajaTotal {
@@ -202,10 +154,46 @@ animation: shine 1s ease infinite;
 }
 
 #cajaTotal:hover{
-  background-color: #323539;
+  background-color: #525354;
   color: #fff;
 }
 
 #cajaTotal > div {
   width: 50%;
+}
+
+.mensaje{
+  color: rgb(234, 162, 162);
+  font-style: oblique;
+  font-size: 13px;
+}
+
+.buttonPedido{
+  background-color: #FF7F50;
+  border-radius: 3px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.buttonPedido:hover{
+  background-color: whitesmoke;
+  color: rgb(47, 43, 43);
+
+}
+/**********************/
+
+.buttonAgregar{
+  background-color: #FF7F50 !important;
+  padding: 10px !important;
+  font-size: 15px !important;
+  color: whitesmoke !important;
+  margin-top: 3px !important;
+  width: 45% !important;
+  border: #FF7F50 !important;
+}
+
+.buttonAgregar:hover{
+  background-color: rgb(47, 43, 43) !important;
+  color: whitesmoke !important;
+
 }

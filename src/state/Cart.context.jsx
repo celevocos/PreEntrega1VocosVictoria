@@ -30,7 +30,7 @@ export const CartProvider = ({ children }) => {
         setCart(nuevoCart)
     }
 
-    //funcion que devuelve la suma de todos los item del carrito
+   //funcion que devuelve la suma de todos los item del carrito
     const getCartCant = () => cart.reduce((acc, item) => acc + item.cant, 0);
 
     //ELIMINAR ITEM DEL CARRITO
@@ -51,7 +51,7 @@ export const CartProvider = ({ children }) => {
         getCartCant, 
         getTotal,
         removeProduct,
-        cleanCart        
+        cleanCart   
     };
 
     //el value es del provider, si no lo ponemos toma por default es el de createContext

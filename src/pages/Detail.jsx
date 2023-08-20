@@ -4,13 +4,13 @@ import { useParams } from "react-router-dom";
 import { ItemCount } from "../components/ItemCount";
 import { useCartContext } from "../state/Cart.context";
 import { Loader } from "../components/Loader/Loader";
+import { LocaleString } from "../components/LocaleString/LocaleString";
 import '../styles/textos.css'
 
 export const Detail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState({});
-
-    const { agregarProduct } = useCartContext(); //podemos traer todo el valur o desestructurar y traer solo la funcion
+    const { agregarProduct  } = useCartContext(); //podemos traer todo el valur o desestructurar y traer solo la funcion
 
 
     useEffect(() => {
@@ -20,27 +20,22 @@ export const Detail = () => {
     }, [])
 
     const handleAdd = (cant) => {
-        // console.log(product)
-        agregarProduct(product, cant);
+       agregarProduct(product, cant);
     };
 
 
-    if (!Object.keys(product).length) return  <div className="spinner">
-    <Loader />
-  </div>
+    if (!Object.keys(product).length) return  <Loader />
 
     return (
-     
-        <div style={{display:"flex" , justifyContent:"center"}}>
-            {/*  <div style={{ width: "900px", height: "330px" }}>    className="img-fluid" es delimg*/}
-            <div className="boxflex">
+        <div className="centradoFlex">
+             <div className="boxflex">
                 <img src={product.img} ></img>
                 <div className="box">
                     <h5>{product.title} </h5>
-                    <h4 className="titulo">${product.price}</h4>
-                    <span className="text-secondary" >{product.category}</span>
+                    <h4 className="titulo text-price"><LocaleString num={product.price}/></h4>
+                    <span className="text-category" >{product.category}</span>
                     <p>{product.description}   </p>
-                    <span className="mb-2 text-muted">Stock: {product.stock}</span>
+                    <span className="mb-2 text-muted">Quedan sólo!</span> <span style={{fontSize:"12px"}}>{product.stock}</span>
                     <div>
                         <ItemCount stock={product.stock} onAdd={handleAdd} />
                     </div>

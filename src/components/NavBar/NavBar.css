@@ -1,0 +1,16 @@
+.nav-prin{
+    padding: 0;
+    background: #FF7F50;
+}
+
+.logo {
+    height: 3em;
+    will-change: filter;
+    transition: filter 300ms;
+    padding: 0px;
+  }
+  
+  .logo:hover {
+    filter: drop-shadow(0 0 2em #dbd64474);
+  }
+  

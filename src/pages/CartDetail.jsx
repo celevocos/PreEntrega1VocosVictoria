@@ -1,24 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useCartContext } from "../state/Cart.context";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import swal from 'sweetalert';
 import { AiFillDelete } from "react-icons/ai";
 import { agregarOrden } from "../lib/orders.request";
+import { updateManyProducts } from "../lib/productos.request";
 
 export const CartDetail = () => {
-    //  const claseInicialButon ='collapsible';
-    const claseActiva = 'activa';
-    const claseInicial = 'content';
     const { cart, getTotal, cleanCart, getCartCant, removeProduct } = useCartContext();
     const [activa, setActive] = useState(false);
-    //const [classname , setClasname] = useState(classInicial)
-    const [nombre, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [telefono, setTelefono] = useState('');
-
+    
     let divForm = useRef(null);
     let button = useRef(null);
-    let objRef = [divForm, button];
 
     const objeto = [{
         name: divForm,
@@ -32,67 +26,117 @@ export const CartDetail = () => {
     }
     ];
 
+    const [values, setValues] = useState({
+        nombre: '',
+        email: '',
+        email2: '',
+        telefono: '',
+    })
 
-    function handleClick() {
-        //si esta activa tiene que mostrar
-        activa ? divForm.current.className = "activo" : divForm.current.className = "content"
+    const [validations, setValidations] = useState({
+        nombre: '',
+        email: '',
+        email2: '',
+        telefono: '',
+    })
+
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setValues({ ...values, [name]: value, })
+    }
+
+    //VALIDAR CADA INPUT DEL FORMULARIO CUANDO SALGA DEL FOCO
+    const validateOne = (e) => {
+        const { name } = e.target
+        const value = values[name]
+        let message = ''
+
+        if (!value) {
+            message = `${name} es requerido`
+        } else {
+            if (name === 'nombre') {
+                (value.length < 3 || value.length > 20) ?
+                    message = 'El nombre debe contener entre 3 y 20 caracteres' : message = 'OK'
+            }
+            if (name === 'email') {
+                (!/\S+@\S+\.\S+/.test(value)) ?
+                    message = 'El formato del mail debe ser como example@mail.com' : message = 'OK'
+            }
+
+            if (name === 'email2') {
+                (validations.email === 'OK') ? ((value === values.email) ?
+                    message = 'OK' : message = 'No coincide mail ingresado') : message = 'Validar email'
+
+            }
+
+            if (name === 'telefono') {
+                (!/^[0-9]*(\.?)[ 0-9]+$/.test(value)) ?
+                    message = 'El telefono debe ser numérico' : message = 'OK'
+
+            }
+
+        }
+        setValidations({ ...validations, [name]: message })
 
     }
 
+    //BOTON DEL FORMILARIO PARA REGISTRAR EL PEDIDO
+    const handleClick = () => {
+        const { nombre, email, email2, telefono } = validations;
 
-    // const handleChange = ((event) => {
-    //     setValue((props) => ({
-    //         ...props,
-    //         [event.target.name]: event.target.value,
-    //     }))
-    //     console.log(JSON.stringify(value));
-    // })
+        if (nombre === 'OK' && email === 'OK' && email2 === 'OK' && telefono === 'OK') {
 
+            createOrder();
+
+        }
+        else {
+            swal({
+                title: "Datos erróneos del formulario",
+                icon: "warning",
+            });
+        }
+
+    }
 
     const handleActive = () => {
-        console.log(activa)
         //si es true es porque ya se hizo click, la clase ya es active
         //si es false es la primera vez
-        //activa ?  seteoClases(false, classInicial): seteoClases(true, classInicial+' activa');
         objeto.map((element) => {
-            console.log(element)
             activa ? seteoClases(false, element.name, element.classInitial) : seteoClases(true, element.name, element.classActive);
         })
-
-        // activa ? seteoClases(false, divForm, claseInicial) : seteoClases(true, divForm, claseActiva);
     }
 
     const seteoClases = (value, ref, clase) => {
         setActive(value)
         ref.current.className = clase;
-        console.log("activa " + activa)
-        console.log("clase " + clase)
     }
 
-    //VALIDAR EL FORMULARIO
-    //SUBIRLO A GIT
-    //VER VARIABLES DE ENTORNO
-    //HACER EL README
-    //VER LO DEL USEMEMO
-    //CUANDO EL CARRITO ESTA VACIO QUE NO MUESTE EL CUADRO
-    //ver de hacer el form con accordeon en otro componenten Formulario
-
-
-
     const createOrder = async () => {
+
         const items = cart.map(({ id, title, cant, price }) => ({ id, title, cant, price, }))
 
+        const { nombre, email2, telefono } = values;
 
         const order = {
-            buyer: { nombre, email, telefono },
+            buyer: { nombre, email2, telefono },
             items,  //le pasamos items, el resultado del map
             total: getTotal(),
         };
 
-        console.log({ order });
-
         const id = await agregarOrden(order);
-        console.log("Id de la orden " + id);
+
+        await updateManyProducts(items);
+
+        swal({
+            title: "Pedido Registrado!",
+            text: "ORDEN: " + id,
+            icon: "success",
+        });
+        setTimeout(() => {
+            cleanCart();
+
+        }, 1000);
+
     }
 
 
@@ -121,7 +165,7 @@ export const CartDetail = () => {
                                         <td>{item.cant}</td>
                                         <td>${item.price}</td>
                                         <td>${item.cant * item.price}</td>
-                                        <td> <AiFillDelete  onClick={()=> removeProduct(item.id)}/></td>
+                                        <td> <AiFillDelete style={{ cursor: "pointer" }} onClick={() => removeProduct(item.id)} /></td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -131,58 +175,51 @@ export const CartDetail = () => {
                             <div>
                                 TOTAL
                             </div>
-                            <div style={{ display: "flex", justifyContent: "center" }}>
+                            <div className="centradoFlex">
                                 ${getTotal()}
                             </div>
                         </div>
-                       
+
                     </div>
 
                     <div type="button" className="collapsible rounded-3" ref={button} onClick={handleActive}>Finalizar Compra</div>
                     <div className="content" ref={divForm}>
-                        <Form style={{ display: "flex", justifyContent: "center" }}>
+                        <Form className="centradoFlex">
                             <div className="col-md-9" style={{ fontSize: "13px" }}>
                                 <Form.Group className="mb-3" controlId="nombre">
                                     <Form.Label>Nombre</Form.Label>
-                                    <Form.Control name="nombre" type="text" size="sm" placeholder="Nombre" onChange={(e) => setName(e.target.value)} />
+                                    <Form.Control name="nombre" type="text" size="sm" placeholder="Nombre" onChange={handleChange} onBlur={validateOne} />
+                                    <label className="mensaje">{validations.nombre}</label>
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="exampleForm.correo">
                                     <Form.Label>Correo</Form.Label>
-                                    <Form.Control name="email" type="email" size="sm" placeholder="Correo" onChange={(e) => setEmail(e.target.value)} />
+                                    <Form.Control name="email" type="email" size="sm" placeholder="Correo" onChange={handleChange} onBlur={validateOne} />
+                                    <label className="mensaje">{validations.email}</label>
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="correo2">
                                     <Form.Label>Repite Correo</Form.Label>
-                                    <Form.Control type="email" size="sm" placeholder="Correo" onChange={(e) => setEmail(e.target.value)} />
+                                    <Form.Control type="email" name="email2" size="sm" placeholder="Correo" onChange={handleChange} onBlur={validateOne} />
+                                    <label className="mensaje">{validations.email2}</label>
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="telefono">
                                     <Form.Label>Telefono</Form.Label>
-                                    <Form.Control type="number" size="sm" placeholder="Telefono" onChange={(e) => setTelefono(e.target.value)} />
+                                    <Form.Control type="text" name="telefono" size="sm" placeholder="Telefono" onChange={handleChange} onBlur={validateOne} />
+                                    <label className="mensaje">{validations.telefono}</label>
                                 </Form.Group>
 
-                                <div style={{ display: "flex", justifyContent: "center" }}>
-                                    <Button variant="secondary" className="my-1" style={{ fontSize: "16px" }} onClick={createOrder}>Realizar Pedido</Button>
+                                <div className="centradoFlex" style={{ paddingBottom: "10px" }}>
+                                    <div type='button' className="buttonPedido" onClick={handleClick}>Realizar Pedido</div>
                                 </div>
                             </div>
                         </Form>
                     </div>
 
                 </>
-            ) : (<h2>El Carrito está VACIO</h2>)}
-
-
-            {/*  <div className="col-md-4">
-                <input type="text" className="form-control form-control-sm" placeholder="Nombre" />
+            ) : (<div className="rounded-4 overflow-hidden cartEmpty">
+                <h3 className="centradoFlex">El Carrito está vacio</h3>
             </div>
-            <div className="col-md-4">
-                <input type="email" className="form-control form-control-sm" placeholder="Correo" />
-            </div>
-            <div className="col-md-4">
-                <input type="email" className="form-control form-control-sm" placeholder="Repite Correo" />
-            </div> 
-            <div className="row">
-                <Button variant="secondary" className="my-1" style={{ fontSize: "16px" }}>Realizar Pedido</Button>
+            )}
 
-            </div>*/}
         </div>
     )
 }

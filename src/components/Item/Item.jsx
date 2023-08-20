@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { LocaleString } from '../LocaleString/LocaleString';
 import './Item.css';
+import '../../styles/textos.css'
 
 
 export const Item = ({ id, img, category, title, price }) => {
@@ -11,9 +12,9 @@ export const Item = ({ id, img, category, title, price }) => {
             <img src={img} className="imagenPro"></img>
             <div className="card-body auto">
                 <h5 className="card-title"> {title}</h5>
-                <div className="card-text text-secondary text-categ" style={{fontStyle:"oblique"}}> {category}
+                <div className="card-text text-secondary text-category"> {category}
                 </div>
-                <div className="card-text" style={{color: "red"}}><LocaleString num ={price}/></div>
+                <div className="card-text text-price"><LocaleString num ={price}/></div>
             </div>
         </div>
     )
