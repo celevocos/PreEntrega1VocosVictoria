@@ -53,8 +53,7 @@ Listado de tecnologias usadas en el proyecto:
 ***
 Pasos para la instalacion del proyecto. 
 ```
-$ git clone https://github.com/celevocos/BellezaNatura.git
-$ cd productos
+$ git clone https://github.com/celevocos/PreEntrega1VocosVictoria.git
 $ npm install
 $ npm run dev
 ```
@@ -69,7 +68,7 @@ Con la colaboracion de CODERHOUSE y Claro Argentina, se logró el desarrollo y d
 
 Celeste Vocos  - celestevocos@hotmail.com
 
-Link del proyecto: [https://github.com/your_username/repo_name](https://github.com/celevocos/BellezaNatura.git)
+Link del proyecto: [https://github.com/your_username/repo_name](https://github.com/celevocos/PreEntrega1VocosVictoria.git)
 
 
 ## FAQs
