@@ -3,7 +3,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
 
 export const ItemCount = ({ stock, onAdd }) => {
-    const [count, setCount] = useState(0);
+    const [count, setCount] = useState(1);
      let buttonAdd = useRef(null);
     let buttonSumar = useRef(null);
 
@@ -13,7 +13,7 @@ export const ItemCount = ({ stock, onAdd }) => {
     }
 
     const quitar = () => {
-        if (count > 0)
+        if (count > 1)
             setCount(prevCount => prevCount - 1)
         enabledButton()
     }
